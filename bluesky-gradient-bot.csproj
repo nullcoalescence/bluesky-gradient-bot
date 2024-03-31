@@ -6,10 +6,12 @@
     <RootNamespace>bluesky_gradient_bot</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>261e1489-8d94-442c-a4e3-c4650a9b932b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FishyFlip" Version="1.6.16" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 

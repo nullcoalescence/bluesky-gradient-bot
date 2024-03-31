@@ -1,25 +1,39 @@
 ﻿using bluesky_gradient_bot.Services;
 using FishyFlip;
 using FishyFlip.Models;
-
+using System.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace bluesky_gradient_bot
 {
     internal class Program
     {
-       static void Main(string[] args)
-        {
+       static async Task Main(string[] args)
+       {
             // Build DI container
-            var serviceProvider = new ServiceCollection()
-                .AddLogging()
-                .AddSingleton<SessionCreationService>()
-                .BuildServiceProvider();
+            HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-            // Do work
-            var sessionService = serviceProvider.GetService<SessionCreationService>();
-            sessionService.Test();
+            builder.Services.AddSingleton<BlueskyService>();
+            builder.Services.AddScoped<CredentialsService>(s => new CredentialsService(@"D:\Keystore\gradient-bot\creds.txt"));
+
+            using IHost host = builder.Build();
+
+            // Authenticate
+            var credentialService = host.Services.GetService<CredentialsService>();
+            var creds = credentialService.ReadCredsTemp();
+
+            var blueskyService = host.Services.GetService<BlueskyService>();
+            await blueskyService.Login(creds);
+            
+            // Generate a gradient
+            //await blueskyService.PostText("Test");
+            await blueskyService.PostImage("Test image", @"C:\Users\btov1\OneDrive\Pictures\alex_grey_1.JPG");
+            
+            await host.RunAsync();
+
+            // Post it
         }
 
     }
