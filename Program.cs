@@ -5,6 +5,7 @@ using System.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 
 namespace bluesky_gradient_bot
 {
@@ -17,6 +18,7 @@ namespace bluesky_gradient_bot
 
             builder.Services.AddSingleton<BlueskyService>();
             builder.Services.AddScoped<CredentialsService>(s => new CredentialsService(@"D:\Keystore\gradient-bot\creds.txt"));
+            builder.Services.AddScoped<GradientService>();
 
             using IHost host = builder.Build();
 
@@ -26,10 +28,13 @@ namespace bluesky_gradient_bot
 
             var blueskyService = host.Services.GetService<BlueskyService>();
             await blueskyService.Login(creds);
-            
+
             // Generate a gradient
-            //await blueskyService.PostText("Test");
-            await blueskyService.PostImage("Test image", @"C:\Users\btov1\OneDrive\Pictures\alex_grey_1.JPG");
+            var gradientService = host.Services.GetService<GradientService>();
+            var linearGradient = gradientService.GenerateLinearGradient();
+
+            // Post
+            //await blueskyService.PostImage("Test image", @"C:\Users\btov1\OneDrive\Pictures\alex_grey_1.JPG");
             
             await host.RunAsync();
 
