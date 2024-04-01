@@ -18,7 +18,7 @@ namespace bluesky_gradient_bot.Models
             var sb = new StringBuilder();
             sb.Append("linear-gradient");
             sb.Append("(");
-            sb.Append(Angle);
+            sb.Append($"{Angle}deg");
           
             for (var i = 0; i < Colors.Count; i++)
             {

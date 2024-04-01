@@ -1,10 +1,4 @@
-﻿using bluesky_gradient_bot.Models;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using bluesky_gradient_bot.Models; 
 
 namespace bluesky_gradient_bot.Services
 {
