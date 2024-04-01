@@ -1,10 +1,5 @@
 ﻿using bluesky_gradient_bot.Models;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bluesky_gradient_bot.Services
 {
@@ -76,8 +71,8 @@ namespace bluesky_gradient_bot.Services
         }
 
         /*
-            * Helper funcs
-            */
+        * Helper funcs
+        */
 
         private int GetRandomNumInRange(int min, int max)
         {
@@ -86,7 +81,7 @@ namespace bluesky_gradient_bot.Services
 
         private string GetRandomColorHex()
         {
-            return String.Format("${0:X6}", this.random.Next(0x1000000));
-        }
+            return String.Format("#{0:X6}", this.random.Next(0x1000000));
         }
     }
+}
