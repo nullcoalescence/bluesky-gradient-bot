@@ -2,11 +2,11 @@
 
 namespace bluesky_gradient_bot.Models
 {
-    internal class RadialGradient
+    internal class RadialGradient : IGradient
     {
         public string Shape { get; set; }
         public string Size { get; set; }
-        public List<string> Colors { get; set; }
+        public List<string> Colors { get; set; } = new List<string>();
 
         override
         public string ToString()

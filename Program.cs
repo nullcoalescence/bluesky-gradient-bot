@@ -1,11 +1,7 @@
 ﻿using bluesky_gradient_bot.Services;
-using FishyFlip;
-using FishyFlip.Models;
-using System.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.Runtime.CompilerServices;
+using bluesky_gradient_bot.Models;
 
 namespace bluesky_gradient_bot
 {
@@ -19,6 +15,7 @@ namespace bluesky_gradient_bot
             builder.Services.AddSingleton<BlueskyService>();
             builder.Services.AddScoped<CredentialsService>(s => new CredentialsService(@"D:\Keystore\gradient-bot\creds.txt"));
             builder.Services.AddScoped<GradientService>();
+            builder.Services.AddScoped<GradientCaptureService>();
 
             using IHost host = builder.Build();
 
@@ -31,14 +28,28 @@ namespace bluesky_gradient_bot
 
             // Generate a gradient
             var gradientService = host.Services.GetService<GradientService>();
-            var linearGradient = gradientService.GenerateLinearGradient();
+            IGradient gradient;
+
+            if (new Random().Next(0, 2) == 0)
+            {
+                gradient = gradientService.GenerateLinearGradient();
+            } else
+            {
+                gradient = gradientService.GenerateRadialGradient();
+            }
+
+            gradient = gradientService.GenerateLinearGradient();
+
+            // Screenshot
+            var gradientCaptureService = host.Services.GetService<GradientCaptureService>();
+            var screenshot = await gradientCaptureService.BuildHeadlessBrowserAndCaptureGradientScreenshot(
+                @"d:/test/gradient.png",
+                gradient.ToCss());
 
             // Post
-            //await blueskyService.PostImage("Test image", @"C:\Users\btov1\OneDrive\Pictures\alex_grey_1.JPG");
+            await blueskyService.PostImage(gradient.ToCss(), screenshot);
             
-            await host.RunAsync();
-
-            // Post it
+            //await host.RunAsync();
         }
 
     }

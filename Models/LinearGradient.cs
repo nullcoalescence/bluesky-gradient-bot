@@ -2,10 +2,10 @@
 
 namespace bluesky_gradient_bot.Models
 {
-    internal class LinearGradient
+    internal class LinearGradient : IGradient
     {
         public int Angle { get; set; }
-        public List<string> Colors { get; set;}
+        public List<string> Colors { get; set;} = new List<string>();
         
         override
         public string ToString()
@@ -18,7 +18,7 @@ namespace bluesky_gradient_bot.Models
             var sb = new StringBuilder();
             sb.Append("linear-gradient");
             sb.Append("(");
-            sb.Append(Angle);
+            sb.Append($"{Angle}deg");
           
             for (var i = 0; i < Colors.Count; i++)
             {
